@@ -1,0 +1,41 @@
+﻿@page "/NikEvents"
+@inject HttpClient Http
+
+<h3>NikEventsList</h3>
+
+@if (events == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var nikEvent in events)
+            {
+                <tr>
+                    <td>@nikEvent.Caption</td>
+                    <td>@nikEvent.Date.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code
+{
+    private List<NikEvent> events;
+
+    protected override async Task OnInitializedAsync()
+    {
+        events = await Http.GetJsonAsync<List<NikEvent>>("NikEvent");
+    }
+}
