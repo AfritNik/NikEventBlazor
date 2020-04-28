@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using NI.Helpers.Blazor.Modal;
 
 namespace NikEventBlazor.Client
 {
@@ -14,9 +15,16 @@ namespace NikEventBlazor.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddBaseAddressHttpClient();
-
+            ConfigureServices(builder.Services);
+            
             await builder.Build().RunAsync();
+        }
+
+        public static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddBaseAddressHttpClient();
+            services.AddScoped<IModalService, ModalService>();
+            //services.AddTransient<IRepository, RepositoryInMemory>();
         }
     }
 }
